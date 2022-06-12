@@ -7,6 +7,8 @@
 #include "RTCDS1307.h"
 #include "EEPROM_Function.h"
 #include "UserCommand.h"
+#include "Display.h"
+
 
 extern MainDataStruct maindata;
 extern RuntimeStatus runtimedata;
@@ -33,8 +35,8 @@ void setup()
     
 //  Read DS1307 RTC =====================================
     rtc.begin();
-//     rtc.setDate(22, 3, 13);   //設定 RTC　年月日
-//     rtc.setTime(19,45, 00);   //設定 RTC　時分秒 
+    //rtc.setDate(22, 6, 12);   //設定 RTC　年月日
+     //rtc.setTime(10,52, 00);   //設定 RTC　時分秒 
     rtc.getDate(runtimedata.year, runtimedata.month, runtimedata.day, runtimedata.weekday);
     rtc.getTime(runtimedata.hour, runtimedata.minute, runtimedata.second, runtimedata.period);
       
@@ -46,14 +48,19 @@ void setup()
 }
 
 void loop()
-{
-    if(reflash_timer > 1000){
+{   
+    /*if(reflash_timer > 1000){
         reflash_timer = 0;
-    }
+    }*/
+    rtc.getDate(runtimedata.year, runtimedata.month, runtimedata.day, runtimedata.weekday);
+    rtc.getTime(runtimedata.hour, runtimedata.minute, runtimedata.second, runtimedata.period);
+
     UserCommand_Task();
     MainProcess_Task();
-    sprintf(runtimedata.DS1307_DateTime ,"%04d/%02d/%02d %02d:%02d:%02d", (runtimedata.year), (runtimedata.month), (runtimedata.day), (runtimedata.hour), (runtimedata.minute), (runtimedata.second));
-    Serial.println(runtimedata.DS1307_DateTime);
+     sprintf(runtimedata.DS1307_DateTime, "%04d/%02d/%02d %02d:%02d:%02d", 
+        runtimedata.year+2000, runtimedata.month, runtimedata.day, 
+        runtimedata.hour, runtimedata.minute, runtimedata.second);
+    cmd_port->println(runtimedata.DS1307_DateTime);
     if(runtimedata.UpdateEEPROM)
     {
         runtimedata.UpdateEEPROM = false;
