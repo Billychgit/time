@@ -40,7 +40,7 @@ void setup()
     //rtc.setTime(9,40, 00);   //設定 RTC　時分秒 
     rtc.getDate(runtimedata.year, runtimedata.month, runtimedata.day, runtimedata.weekday);
     rtc.getTime(runtimedata.hour, runtimedata.minute, runtimedata.second, runtimedata.period);
-      
+     
 
     pinMode(BUZZ, OUTPUT);
     TimerInit(1, 10000);
@@ -55,23 +55,23 @@ void loop()
     }*/
     rtc.getDate(runtimedata.year, runtimedata.month, runtimedata.day, runtimedata.weekday);
     rtc.getTime(runtimedata.hour, runtimedata.minute, runtimedata.second, runtimedata.period);
-
+  
     UserCommand_Task();
-    MainProcess_Task();
-     sprintf(runtimedata.DS1307_DateTime, "%04d/%02d/%02d %02d:%02d:%02d", 
+    MainProcess_Task();/*%02d:%02d:%02d*/
+     sprintf(runtimedata.DS1307_DateTime, "%04d/%02d/%02d ", 
         runtimedata.year+2000, runtimedata.month, runtimedata.day, 
         runtimedata.hour, runtimedata.minute, runtimedata.second);
     cmd_port->println(runtimedata.DS1307_DateTime);
      Display(0,0,0,runtimedata.DS1307_DateTime);
      
-     /*Display(0,0,1,String(runtimedata.hour));
+     Display(0,0,1,String(runtimedata.hour));
      
-     Display(2,0,1,":");
+     Display(0,2,1,":");
     
-     Display(3,0,1,String(runtimedata.minute));
-     
-     Display(5,0,1,String(runtimedata.second));
-     */
+     Display(0,4,1,String(runtimedata.minute));
+     Display(0,6,1,":");
+     Display(0,8,1,String(runtimedata.second));
+    
     if(runtimedata.UpdateEEPROM)
     {
         runtimedata.UpdateEEPROM = false;
