@@ -8,6 +8,7 @@
 #include "EEPROM_Function.h"
 #include "UserCommand.h"
 #include "Display.h"
+#include <Wire.h>
 
 
 extern MainDataStruct maindata;
@@ -32,11 +33,11 @@ void setup()
     cmd_port->begin(CMD_PORT_BR);
     READ_EEPROM();
     MainProcess_Init();
-    
+    Display_Init();
 //  Read DS1307 RTC =====================================
     rtc.begin();
-    //rtc.setDate(22, 6, 12);   //設定 RTC　年月日
-     //rtc.setTime(10,52, 00);   //設定 RTC　時分秒 
+    //rtc.setDate(22, 6, 13);   //設定 RTC　年月日
+    //rtc.setTime(9,40, 00);   //設定 RTC　時分秒 
     rtc.getDate(runtimedata.year, runtimedata.month, runtimedata.day, runtimedata.weekday);
     rtc.getTime(runtimedata.hour, runtimedata.minute, runtimedata.second, runtimedata.period);
       
@@ -61,6 +62,16 @@ void loop()
         runtimedata.year+2000, runtimedata.month, runtimedata.day, 
         runtimedata.hour, runtimedata.minute, runtimedata.second);
     cmd_port->println(runtimedata.DS1307_DateTime);
+     Display(0,0,0,runtimedata.DS1307_DateTime);
+     
+     /*Display(0,0,1,String(runtimedata.hour));
+     
+     Display(2,0,1,":");
+    
+     Display(3,0,1,String(runtimedata.minute));
+     
+     Display(5,0,1,String(runtimedata.second));
+     */
     if(runtimedata.UpdateEEPROM)
     {
         runtimedata.UpdateEEPROM = false;
