@@ -36,8 +36,8 @@ void setup()
     Display_Init();
 //  Read DS1307 RTC =====================================
     rtc.begin();
-    //rtc.setDate(22, 6, 13);   //設定 RTC　年月日
-    //rtc.setTime(9,40, 00);   //設定 RTC　時分秒 
+    rtc.setDate(22, 6, 13);   //設定 RTC　年月日
+    rtc.setTime(10,25, 00);   //設定 RTC　時分秒 
     rtc.getDate(runtimedata.year, runtimedata.month, runtimedata.day, runtimedata.weekday);
     rtc.getTime(runtimedata.hour, runtimedata.minute, runtimedata.second, runtimedata.period);
      
@@ -50,17 +50,18 @@ void setup()
 
 void loop()
 {   
-    /*if(reflash_timer > 1000){
+    if(reflash_timer > 1000){
         reflash_timer = 0;
-    }*/
+        Display(0,8,1,"  ");
+    }
+
     rtc.getDate(runtimedata.year, runtimedata.month, runtimedata.day, runtimedata.weekday);
     rtc.getTime(runtimedata.hour, runtimedata.minute, runtimedata.second, runtimedata.period);
   
     UserCommand_Task();
     MainProcess_Task();/*%02d:%02d:%02d*/
      sprintf(runtimedata.DS1307_DateTime, "%04d/%02d/%02d ", 
-        runtimedata.year+2000, runtimedata.month, runtimedata.day, 
-        runtimedata.hour, runtimedata.minute, runtimedata.second);
+        runtimedata.year+2000, runtimedata.month, runtimedata.day);
     cmd_port->println(runtimedata.DS1307_DateTime);
      Display(0,0,0,runtimedata.DS1307_DateTime);
      
@@ -70,6 +71,7 @@ void loop()
     
      Display(0,4,1,String(runtimedata.minute));
      Display(0,6,1,":");
+     
      Display(0,8,1,String(runtimedata.second));
     
     if(runtimedata.UpdateEEPROM)
