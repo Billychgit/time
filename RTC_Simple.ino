@@ -26,6 +26,7 @@ double map(double x, double in_min, double in_max, double out_min, double out_ma
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 long reflash_timer = 0;
+long test_timer=0;
 //========================================================
 void setup() 
 {
@@ -36,8 +37,8 @@ void setup()
     Display_Init();
 //  Read DS1307 RTC =====================================
     rtc.begin();
-    rtc.setDate(22, 6, 13);   //設定 RTC　年月日
-    rtc.setTime(10,25, 00);   //設定 RTC　時分秒 
+    //rtc.setDate(22, 6, 14);   //設定 RTC　年月日
+    //rtc.setTime(9,32, 00);   //設定 RTC　時分秒 
     rtc.getDate(runtimedata.year, runtimedata.month, runtimedata.day, runtimedata.weekday);
     rtc.getTime(runtimedata.hour, runtimedata.minute, runtimedata.second, runtimedata.period);
      
@@ -54,7 +55,11 @@ void loop()
         reflash_timer = 0;
         Display(0,8,1,"  ");
     }
-
+  /*if(test_timer> 10000){
+        test_timer = 0;
+        runtimedata.UpdateEEPROM = true;
+        Serial.print("Savedhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+    }*/
     rtc.getDate(runtimedata.year, runtimedata.month, runtimedata.day, runtimedata.weekday);
     rtc.getTime(runtimedata.hour, runtimedata.minute, runtimedata.second, runtimedata.period);
   
@@ -85,5 +90,7 @@ ISR(TIMER1_COMPA_vect)
 {
     if(reflash_timer < 0xFFFF)
         reflash_timer += TIMER_INTERVAL_MS;
+        if(test_timer< 0xFFFF)
+        test_timer+= TIMER_INTERVAL_MS;
     MainPorcess_Timer();
 }
