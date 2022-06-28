@@ -60,30 +60,197 @@ void loop()
         runtimedata.UpdateEEPROM = true;
         Serial.print("Savedhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
     }*/
-    rtc.getDate(runtimedata.year, runtimedata.month, runtimedata.day, runtimedata.weekday);
-    rtc.getTime(runtimedata.hour, runtimedata.minute, runtimedata.second, runtimedata.period);
+    
   
     UserCommand_Task();
     MainProcess_Task();/*%02d:%02d:%02d*/
-     sprintf(runtimedata.DS1307_DateTime, "%04d/%02d/%02d ", 
-        runtimedata.year+2000, runtimedata.month, runtimedata.day);
-    cmd_port->println(runtimedata.DS1307_DateTime);
-     Display(0,0,0,runtimedata.DS1307_DateTime);
-     
-     Display(0,0,1,String(runtimedata.hour));
-     
-     Display(0,2,1,":");
     
-     Display(0,4,1,String(runtimedata.minute));
-     Display(0,6,1,":");
-     
-     Display(0,8,1,String(runtimedata.second));
+    //circal();
+    DisplaySetHour();
+    DisplaySetMinute();
+    DisplaySetYear();
+    DisplaySetMonth();
+    
+    coop();
+    
     
     if(runtimedata.UpdateEEPROM)
     {
         runtimedata.UpdateEEPROM = false;
         WRITE_EEPROM();
     }
+}
+void coop(){
+     sprintf(runtimedata.DS1307_DateTime, "%04d/%02d/%02d ", 
+        runtimedata.ny+2000, runtimedata.nm, runtimedata.nd);
+    cmd_port->println(runtimedata.DS1307_DateTime);
+     Display(0,0,0,runtimedata.DS1307_DateTime);
+     
+     Display(0,0,1,String(runtimedata.nh));
+     
+     Display(0,2,1,":");
+    
+     Display(0,4,1,String(runtimedata.nin));
+     Display(0,6,1,":");
+     
+     Display(0,8,1,String(runtimedata.second));
+    }
+void DisplaySetHour()
+{
+// 
+   
+  if(digitalRead(22)==HIGH){
+    if(runtimedata.hour==23)
+    { 
+      Display(0,0,1,"  ");
+      runtimedata.hour=0;
+    }
+    else
+    { 
+      Display(0,0,1,"  ");
+      runtimedata.hour++;
+    }
+  }
+
+  
+   if(digitalRead(23)==HIGH)
+  {
+    if(runtimedata.hour==0)
+    {Display(0,0,1,"  ");
+     runtimedata.hour=23;
+    }
+    else
+    {
+      Display(0,0,1,"  ");
+      runtimedata.hour--;
+    }
+  }
+    runtimedata.nh=runtimedata.hour;
+  delay(200);
+}
+
+
+
+void DisplaySetMinute()
+{
+// Setting the minutes
+  
+  if(digitalRead(24)==HIGH)
+  {
+    if (runtimedata.minute==59)
+    {
+      runtimedata.minute=0;
+      runtimedata.nin=runtimedata.minute;
+    }
+    else
+    {
+      runtimedata.minute=runtimedata.minute++;
+      runtimedata.nin=runtimedata.minute;
+    }
+  }
+   if(digitalRead(25)==HIGH)
+  {
+    if (runtimedata.minute==0)
+    {
+      runtimedata.minute=59;
+      runtimedata.nin=runtimedata.minute;
+    }
+    else
+    {
+      runtimedata.minute=runtimedata.minute--;
+      runtimedata.nin=runtimedata.minute;
+    }
+  }
+  
+  
+}
+
+void DisplaySetYear()
+{
+// setting the year
+  //lcd.clear();
+  if(digitalRead(26)==HIGH)
+  {    
+    runtimedata.year++;
+    runtimedata.ny=runtimedata.year;
+    Serial.print("++");
+  }
+   if(digitalRead(27)==HIGH)
+  {
+    runtimedata.year--;
+    Serial.print("--");
+    runtimedata.ny=runtimedata.year;
+  }
+  
+  delay(200);
+}
+
+void DisplaySetMonth()
+{
+// Setting the month
+  
+  if(digitalRead(28)==HIGH)
+  {
+    if (runtimedata.month==12)
+    {
+      runtimedata.month=1;
+      runtimedata.nm=runtimedata.month;
+    }
+    else
+    {
+      runtimedata.month=runtimedata.month+1;
+      runtimedata.nm=runtimedata.month;
+    }
+  }
+   if(digitalRead(29)==HIGH)
+  {
+    if (runtimedata.month==1)
+    {
+      runtimedata.month=12;
+      runtimedata.nm=runtimedata.month;
+    }
+    else
+    {
+      runtimedata.month=runtimedata.month-1;
+      runtimedata.nm=runtimedata.month;
+    }
+  }
+  
+  delay(200);
+}
+
+void DisplaySetDay()
+{
+// Setting the day
+  //lcd.clear();
+  if(digitalRead(30)==HIGH)
+  {
+    if (runtimedata.day==31)
+    { 
+      runtimedata.day=1;
+      runtimedata.nd=runtimedata.day;
+    }
+    else
+    {
+      runtimedata.day=runtimedata.day+1;
+      runtimedata.nd=runtimedata.day;
+    }
+  }
+   if(digitalRead(31)==HIGH)
+  {
+    if (runtimedata.day==1)
+    {
+      runtimedata.day=31;
+      runtimedata.nd=runtimedata.day;
+    }
+    else
+    {
+      runtimedata.day=runtimedata.day-1;
+      runtimedata.nd=runtimedata.day;
+    }
+  }
+ 
+  delay(200);
 }
 
 ISR(TIMER1_COMPA_vect)
