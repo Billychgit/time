@@ -53,7 +53,7 @@ typedef struct _RuntimeStruct_
     
 	bool 		UpdateEEPROM;
     //RTC DS1307 =========================================================
-    uint8_t year, month, weekday, day, hour, minute,second,ny,nm,nd,nh,nin;
+    uint8_t year, month, day, hour, minute,second,weekday,ny,nm,nd,nh,nin;
     bool period = 0;
     String m[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
     String w[7] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
