@@ -51,17 +51,21 @@ void setup()
 
 void loop()
 {   
-    /*if(reflash_timer > 1000){
+    if(reflash_timer > 1000){
         reflash_timer = 0;
         Display(0,8,1,"  ");
-    }*?
+    }
   
-    
+       
   
     UserCommand_Task();
     MainProcess_Task();/*%02d:%02d:%02d*/
+    //rtc.getDate(runtimedata.ny, runtimedata.nm, runtimedata.nd, runtimedata.weekday);
     
+     //rtc.getDate(runtimedata.year, runtimedata.month, runtimedata.day, runtimedata.weekday);
+    //rtc.getTime(runtimedata.hour, runtimedata.minute, runtimedata.second, runtimedata.period);
     //circal();
+    rtc.getTime(runtimedata.nh, runtimedata.nin, runtimedata.second, runtimedata.period);
     DisplaySetHour();
     DisplaySetMinute();
     DisplaySetYear();
@@ -89,6 +93,7 @@ void coop(){
      Display(0,4,1,String(runtimedata.nin));
      Display(0,6,1,":");
      
+    //rtc.getTime(runtimedata.second);
      Display(0,8,1,String(runtimedata.second));
     }
 void DisplaySetHour()
