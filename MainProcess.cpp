@@ -188,5 +188,3 @@ void buzzerPlay(int playMS)
   delay(playMS);
   digitalWrite(BUZZ, LOW);
 }
-
-
