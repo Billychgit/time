@@ -51,15 +51,11 @@ void setup()
 
 void loop()
 {   
-    if(reflash_timer > 1000){
+    /*if(reflash_timer > 1000){
         reflash_timer = 0;
         Display(0,8,1,"  ");
-    }
-  /*if(test_timer> 10000){
-        test_timer = 0;
-        runtimedata.UpdateEEPROM = true;
-        Serial.print("Savedhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-    }*/
+    }*?
+  
     
   
     UserCommand_Task();
@@ -126,7 +122,7 @@ void DisplaySetHour()
     }
   }
     runtimedata.nh=runtimedata.hour;
-  delay(200);
+  //delay(50);
 }
 
 
@@ -138,30 +134,29 @@ void DisplaySetMinute()
   if(digitalRead(24)==HIGH)
   {
     if (runtimedata.minute==59)
-    {
+    { Display(0,4,1,"  ");
       runtimedata.minute=0;
-      runtimedata.nin=runtimedata.minute;
+      
     }
     else
     {
-      runtimedata.minute=runtimedata.minute++;
-      runtimedata.nin=runtimedata.minute;
+      runtimedata.minute++;
+      
     }
   }
    if(digitalRead(25)==HIGH)
   {
     if (runtimedata.minute==0)
-    {
+    { Display(0,4,1,"  ");
       runtimedata.minute=59;
-      runtimedata.nin=runtimedata.minute;
     }
     else
     {
-      runtimedata.minute=runtimedata.minute--;
-      runtimedata.nin=runtimedata.minute;
+     runtimedata.minute--;
     }
   }
-  
+  runtimedata.nin=runtimedata.minute;
+  //delay(200);
   
 }
 
@@ -182,7 +177,7 @@ void DisplaySetYear()
     runtimedata.ny=runtimedata.year;
   }
   
-  delay(200);
+  //delay(200);
 }
 
 void DisplaySetMonth()
@@ -216,24 +211,23 @@ void DisplaySetMonth()
     }
   }
   
-  delay(200);
+  //delay(200);
 }
 
 void DisplaySetDay()
 {
 // Setting the day
-  //lcd.clear();
+  
   if(digitalRead(30)==HIGH)
   {
     if (runtimedata.day==31)
     { 
       runtimedata.day=1;
-      runtimedata.nd=runtimedata.day;
     }
     else
     {
-      runtimedata.day=runtimedata.day+1;
-      runtimedata.nd=runtimedata.day;
+      runtimedata.day++;
+      
     }
   }
    if(digitalRead(31)==HIGH)
@@ -241,16 +235,16 @@ void DisplaySetDay()
     if (runtimedata.day==1)
     {
       runtimedata.day=31;
-      runtimedata.nd=runtimedata.day;
+     
     }
     else
     {
-      runtimedata.day=runtimedata.day-1;
-      runtimedata.nd=runtimedata.day;
+     runtimedata.day--;
+
     }
   }
- 
-  delay(200);
+ runtimedata.nd=runtimedata.day;
+  //delay(200);
 }
 
 ISR(TIMER1_COMPA_vect)
