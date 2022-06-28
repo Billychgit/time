@@ -53,7 +53,7 @@ typedef struct _RuntimeStruct_
     
 	bool 		UpdateEEPROM;
     //RTC DS1307 =========================================================
-    uint8_t year, month, weekday, day, hour, minute, second;
+    uint8_t year, month, weekday, day, hour, minute, second,ny,nm,nd,nh,nin;
     bool period = 0;
     String m[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
     String w[7] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
@@ -67,6 +67,5 @@ void MainPorcess_Timer();
 void MainProcess_Task();
 void MainProcess_Init();
 void buzzerPlay(int playMS);
-
 
 #endif	//_MAIN_PROCESS_H_
